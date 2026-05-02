@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 
 public class AuthController: Controller
@@ -36,13 +37,15 @@ public class AuthController: Controller
             return View();
         }
 
-        using var sha = SHA256.Create();
+        var hasher = new PasswordHasher<string>();
 
-        var hash = Convert.ToBase64String(
-            sha.ComputeHash(Encoding.UTF8.GetBytes(password))
+        var result = hasher.VerifyHashedPassword(
+            user.Username,
+            user.PasswordHash,
+            password
         );
-
-        if(hash != user.PasswordHash)
+        
+        if(result == PasswordVerificationResult.Failed)
         {
             ModelState.AddModelError("", "Invalid login");
             return View();
