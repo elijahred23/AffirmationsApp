@@ -1,0 +1,34 @@
+@model Affirmation
+<h2>Create Affirmation</h2>
+
+<form asp-action="Create">
+	<div>
+		<label>Text</label>
+		<input asp-for="Text" />
+		<span asp-validation-for="Text"></span>
+	</div>
+
+	<div>
+		<label>Category</label>
+		<select asp-for="CategoryId">
+			@foreach (var c in ViewBag.Categories)
+			{
+			<option value="@c.Id">@c.Name</option>
+			}
+		</select>
+		<span asp-validation-for="CategoryId"></span>
+	</div>
+
+	<div>
+		<label>Mood</label>
+		<input asp-for="Mood" />
+		<span asp-validation-for="Mood"></span>
+	</div>
+	<div>
+		<label>Author</label>
+		<input asp-for="Author" />
+		<span asp-validation-for="Author"></span>
+	</div>
+
+	<button type="submit">Save</button>
+</form>

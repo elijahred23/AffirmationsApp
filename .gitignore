@@ -1,0 +1,43 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE/editor
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Logs
+*.log
+logs/
+
+# Test and coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Secrets/local env overrides
+appsettings.Local.json
+.env
+.env.*
+

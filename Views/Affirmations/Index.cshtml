@@ -1,0 +1,84 @@
+@model IEnumerable<Affirmation>
+
+<h2>Affirmations</h2>
+<input type="text" id="searchBox" placeholder="Search affirmations..." />
+<h4 id="resultCount">All affirmations</h4>
+<div id="affirmationContainer">
+	@Html.Partial("_AffirmationList", Model)
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$("#searchBox").on("keyup", function () {
+			var query = $(this).val();
+
+			$.ajax({
+				url: '/Affirmations/Search',
+				type: 'GET',
+				data: { query: query },
+				success: function (result) {
+
+    $("#affirmationContainer").html(result);
+
+    var count = $("#affirmationContainer .card").length;
+
+    $("#resultCount").text(
+        query.length > 0
+            ? count + " affirmations found"
+            : "All affirmations"
+    );
+
+    removeHighlights();
+
+    if (query.length > 0) {
+        highlightInElements(".card h4, .card p", query);
+    }
+}
+
+			})
+		})
+	})
+
+
+function removeHighlights() {
+    $(".highlight").each(function () {
+        $(this).replaceWith($(this).text());
+    });
+}
+function highlightInElements(selector, keyword) {
+    if (!keyword) return;
+
+    var regex = new RegExp("(" + keyword + ")", "gi");
+
+    $(selector).each(function () {
+        let html = $(this).html();
+
+        // replace only visible text content safely
+        let newHtml = html.replace(regex, "<span class='highlight'>$1</span>");
+
+        $(this).html(newHtml);
+    });
+}
+function highlightText(element, keyword) {
+    if (!keyword) return;
+
+    let regex = new RegExp("(" + keyword + ")", "gi");
+
+    $(element).contents().each(function () {
+
+        if (this.nodeType === 3) {
+            // TEXT NODE ONLY (safe)
+            let replaced = this.nodeValue.replace(regex, "<span class='highlight'>$1</span>");
+
+            if (replaced !== this.nodeValue) {
+                $(this).replaceWith(replaced);
+            }
+
+        } else {
+            // recurse into child elements
+            highlightText(this, keyword);
+        }
+    });
+}
+</script>

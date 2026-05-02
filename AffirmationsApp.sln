@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AffirmationsApp", "AffirmationsApp.csproj", "{DF564F1B-531B-0203-AFDE-07A0ADC3EA87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF564F1B-531B-0203-AFDE-07A0ADC3EA87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF564F1B-531B-0203-AFDE-07A0ADC3EA87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF564F1B-531B-0203-AFDE-07A0ADC3EA87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF564F1B-531B-0203-AFDE-07A0ADC3EA87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C104573-07C8-44BC-977E-E11B96446BD0}
+	EndGlobalSection
+EndGlobal

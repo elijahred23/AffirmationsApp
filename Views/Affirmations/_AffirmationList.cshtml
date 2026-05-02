@@ -1,0 +1,15 @@
+@model IEnumerable<Affirmation>
+
+@foreach (Affirmation item in Model)
+{
+    <div class="card" style="margin-bottom: 10px; padding:10px;">
+    <h4>@item.Text</h4>
+    <p>
+        <strong>Category:</strong> @item.Category?.Name<br />
+        <strong>Mood:</strong> @item.Mood<br />
+        <strong>Author:</strong> @item.Author<br/>
+        <strong><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></strong>
+        <strong><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></strong>
+    </p>
+    </div>
+}

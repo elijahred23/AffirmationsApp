@@ -1,0 +1,11 @@
+@model Category
+<h2>Delete Category</h2>
+<p>Are you sure you want to delete:</p>
+
+<h3>@Model.Name</h3>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Delete</button>
+    <a asp-action="Index">Cancel</a>
+</form>

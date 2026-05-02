@@ -1,0 +1,47 @@
+@model Affirmation 
+<h2>Edit Affirmation</h2>
+
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Text</label>
+        <input asp-for="Text" />
+        <span asp-validation-for="Text"></span>
+    </div>
+
+    <div>
+    
+        <label>Category</label>
+        <select asp-for="CategoryId">
+            @foreach (var c in ViewBag.Categories)
+            {
+                <option value="@c.Id" selected="@(c.Id == Model.CategoryId)">
+                    @c.Name
+                </option>
+            }
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+    </div>
+
+    <div>
+        <label>Mood</label>
+        <input asp-for="Mood" />    
+        <span asp-validation-for="Mood"></span>
+    </div>
+
+    <div>
+        <label>Author</label>
+        <input  asp-for="Author" />
+        <span asp-validation-for="Author"></span>
+    </div>
+
+    <div>
+        <label>Active</label>
+        <input type="checkbox" asp-for="IsActive" />
+    </div>
+
+    <button type="submit">Save</button>
+    <a asp-action="Index">Cancel</a>
+</form>
