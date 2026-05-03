@@ -151,6 +151,12 @@ public class AdminController: Controller
         var permission = await _context.Permissions.FindAsync(id);
         if(permission != null)
         {
+            var userPermissions = await _context.UserPermissions
+                .Where(up => up.PermissionId == id)
+                .ToListAsync();
+
+            _context.UserPermissions.RemoveRange(userPermissions);
+
             _context.Permissions.Remove(permission);
             await _context.SaveChangesAsync();
         }
