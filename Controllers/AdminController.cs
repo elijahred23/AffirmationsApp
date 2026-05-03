@@ -89,4 +89,54 @@ public class AdminController: Controller
 
         return RedirectToAction("Permissions");
     }
+    public async Task<IActionResult> ManagePermissions()
+    {
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
+        var permissions = await _context.Permissions.ToListAsync();
+        return View(permissions);
+    }
+    public IActionResult CreatePermission()
+    {
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreatePermission(Permission model)
+    {
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
+        _context.Permissions.Add(model);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("ManagePermissions");
+    }
+
+    public async Task<IActionResult> EditPermission(int id)
+    {
+        var permission = await _context.Permissions.FindAsync(id);
+        return View(permission);
+    }
+    [HttpPost]
+    public async Task<IActionResult> EditPermission(Permission model)
+    {
+        _context.Permissions.Update(model);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("ManagePermissions");
+    }
+    public async Task<IActionResult> DeletePermission(int id)
+    {
+        var permission = await _context.Permissions.FindAsync(id);
+        if(permission != null)
+        {
+            _context.Permissions.Remove(permission);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction("ManagePermissions");
+    }
 }

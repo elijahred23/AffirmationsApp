@@ -1,0 +1,27 @@
+@model List<Permission>
+
+<h2>Permissions</h2>
+
+<a asp-action="CreatePermission">Create New Permission</a>
+<table class="table">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+@foreach (var p in Model)
+{
+    <tr>
+        <td>@p.Name</td>
+        <td>@p.Description</td>
+        <td>
+            <a asp-action="EditPermission" asp-route-id="@p.Id">Edit</a>
+            <a asp-action="DeletePermission" asp-route-id="@p.Id">Delete</a>
+        </td>
+    </tr>
+}
+</tbody>
+</table>

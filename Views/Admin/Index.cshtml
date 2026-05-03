@@ -1,6 +1,12 @@
 @model AdminDashboardViewModel
 <h2>Admin Dashboard</h2>
 
+<a asp-controller="Admin" asp-action="Permissions">
+    Manage User Permissions
+</a>
+<a asp-controller="Admin" asp-action="ManagePermissions">
+    Manage Permissions
+</a>
 <div class="row">
     <div class="col">
         <h4>Total Affirmations</h4>

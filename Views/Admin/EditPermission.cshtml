@@ -1,0 +1,14 @@
+@model Permission
+
+<h2>Edit Permission</h2>
+
+<form asp-action="EditPermission" method="post">
+<input type="hidden" asp-for="Id" />
+
+
+<input asp-for="Name" />
+<input asp-for="Description" />
+
+<button type="submit">Save</button>
+
+</form>
