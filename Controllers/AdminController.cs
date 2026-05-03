@@ -95,7 +95,24 @@ public class AdminController: Controller
             return Forbid();
 
         var permissions = await _context.Permissions.ToListAsync();
-        return View(permissions);
+
+        var usage = await _context.UserPermissions
+            .GroupBy(up => up.PermissionId)
+            .Select( g => new
+            {
+                PermissionId = g.Key,
+                Count = g.Count()
+            }).ToListAsync();
+
+        var model = permissions.Select(p => new PermissionUsageViewModel
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            UserCount = usage.FirstOrDefault(u => u.PermissionId == p.Id)?.Count ?? 0
+        }).ToList();
+
+        return View(model);
     }
     public IActionResult CreatePermission()
     {
