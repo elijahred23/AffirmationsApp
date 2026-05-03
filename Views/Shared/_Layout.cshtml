@@ -22,7 +22,15 @@
             }
             @if(User.HasClaim("Permission", "Admin.Access"))
             {
-                <li><a asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+                <li><a asp-controller="Admin" asp-action="Index">Admin</a></li>
+            }
+            @if(User.HasClaim("Permission", "Admin.Access"))
+            {
+                <li>
+                    <a asp-controller="Admin" asp-action="Permissions">
+                    Permissions
+                    </a>
+                </li>
             }
             </ul>
             <ul class="navbar-nav ms-auto">
