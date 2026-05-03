@@ -1,7 +1,13 @@
 @model IEnumerable<Affirmation> 
 
 <h2>Affirmations</h2>
-<input type="text" id="searchBox" placeholder="Search affirmations..." />
+@if(User.HasClaim("Permission", "Affirmations.Create"))
+{
+    <a asp-action="Create" >Create New Affirmation</a>
+}
+<div>
+    <input type="text" id="searchBox" placeholder="Search affirmations..." />
+</div>
 <h4 id="resultCount">All affirmations</h4>
 <div id="affirmationContainer">
 	@Html.Partial("_AffirmationList", Model)
