@@ -20,6 +20,10 @@
             {
                 <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
             }
+            @if(User.HasClaim("Permission", "Admin.Access"))
+            {
+                <li><a asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+            }
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">

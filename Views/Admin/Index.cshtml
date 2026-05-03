@@ -1,0 +1,28 @@
+@model AdminDashboardViewModel
+<h2>Admin Dashboard</h2>
+
+<div class="row">
+    <div class="col">
+        <h4>Total Affirmations</h4>
+        <p>@Model.TotalAffirmations</p>
+    </div>
+    <div class="col">
+        <h4>Total Categories</h4>
+        <p>@Model.TotalCategories</p>
+    </div>
+    <div class="col">
+        <h4>Total Users</h4>
+        <p>@Model.TotalUsers</p>
+    </div>
+</div>
+<hr />
+
+
+<h4>Recent Affirmations</h4>
+
+<ul>
+@foreach (var item in Model.RecentAffirmations)
+{
+    <li>@item</li>
+}
+</ul>
