@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/AffirmationsApp.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @if(User.Identity.IsAuthenticated){
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <ul style="display:flex; gap:15px; list-style:none;">
@@ -18,8 +19,27 @@
             <li><a asp-controller="Affirmations" asp-action="Random">Random Affirmation</a></li>
             <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
             </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <span class="nav-link">
+                        Hello, @User.Identity.Name
+                    </span>
+                </li>
+
+                <li class="nav-item">
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-link nav-link">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </nav>
     </header>
+    } else 
+    {
+           <div></div> 
+    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
