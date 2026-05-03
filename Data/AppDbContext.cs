@@ -10,6 +10,8 @@ public class AppDbContext : DbContext
 	public DbSet<Tag> Tags { get;set;}
 	public DbSet<AffirmationTag> AffirmationTags {get;set;}
 	public DbSet<UserFavorite> UserFavorites {get;set;}
+	public DbSet<Permission> Permissions {get;set;}
+	public DbSet<UserPermission> UserPermissions {get;set;}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -26,5 +28,7 @@ public class AppDbContext : DbContext
 			.WithMany(t => t.AffirmationTags)
 			.HasForeignKey(at => at.TagId);
 
+		modelBuilder.Entity<UserPermission>()
+			.HasKey(up => new { up.UserId, up.PermissionId });
 	}
 }

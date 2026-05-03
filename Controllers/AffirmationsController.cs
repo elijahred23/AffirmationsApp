@@ -13,13 +13,16 @@ public class AffirmationsController : Controller
 	}
 
 	public async Task<IActionResult> Index()
-	{
-		var data = await _context.Affirmations
+    {
+        var userId = int.Parse(User.FindFirst("UserId").Value);
+
+		var affirmations = await _context.Affirmations
 			.Include(a => a.Category)
 			.ToListAsync();
 
-		return View(data);
-	}
+
+		return View(affirmations);
+    }
 	public async Task<IActionResult> Create()
 	{
 		ViewBag.Categories = _context.Categories.ToList();
@@ -119,6 +122,7 @@ public class AffirmationsController : Controller
 			a.Category.Name.Contains(query)
 			).ToListAsync();
 
-		return PartialView("_AffirmationList", results);
+
+		return PartialView("_AffirmationList", results); 
     }
 }

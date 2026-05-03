@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Identity;
 public class AuthController: Controller
 {
     private readonly UsersDbContext _context;
+    private readonly AppDbContext _appDbContext;
 
-    public AuthController(UsersDbContext context)
+    public AuthController(UsersDbContext context, AppDbContext appDbContext)
     {
         _context = context;
+        _appDbContext = appDbContext;
     }
 
     public IActionResult Login()
@@ -57,6 +59,16 @@ public class AuthController: Controller
             new Claim("UserId", user.Id.ToString())
         };
 
+        var permissions = await _appDbContext.UserPermissions
+            .Include(up => up.Permission)
+            .Where(up => up.UserId == user.Id)
+            .Select(up => up.Permission.Name)
+            .ToListAsync();
+        
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("Permission", permission));
+        }
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
 

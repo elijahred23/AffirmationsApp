@@ -15,7 +15,10 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <ul style="display:flex; gap:15px; list-style:none;">
             <li><a asp-controller="Affirmations" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Affirmations" asp-action="Create">Create Affirmation</a></li>
+            @if(User.HasClaim("Permission", "Affirmations.Create"))
+            {
+                <li><a asp-controller="Affirmations" asp-action="Create">Create Affirmation</a></li>
+            }
             <li><a asp-controller="Affirmations" asp-action="Random">Random Affirmation</a></li>
             <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
             </ul>

@@ -1,4 +1,4 @@
-@model IEnumerable<Affirmation>
+@model IEnumerable<Affirmation> 
 
 @foreach (Affirmation item in Model)
 {
@@ -8,8 +8,14 @@
         <strong>Category:</strong> @item.Category?.Name<br />
         <strong>Mood:</strong> @item.Mood<br />
         <strong>Author:</strong> @item.Author<br/>
-        <strong><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></strong>
-        <strong><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></strong>
+        @if(User.HasClaim("Permission", "Affirmations.Create"))
+        {
+            <strong><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></strong>
+        }
+        @if(User.HasClaim("Permission", "Affirmations.Delete"))
+        {
+            <strong><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></strong>
+        }
     </p>
     </div>
 }
