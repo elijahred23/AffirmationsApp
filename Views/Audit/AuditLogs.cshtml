@@ -1,0 +1,26 @@
+@model List<AuditLog>
+<h2>Audit Logs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>    
+            <th>Action</th>
+            <th>Entity</th>
+            <th>Details</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var log in Model)
+    {
+        <tr>
+        <td>@log.Username</td>
+        <td>@log.Action</td>
+        <td>@log.EntityName</td>
+        <td>@log.Details</td>
+        <td>@log.CreatedAt</td>
+        </tr>
+    }
+    </tbody>
+</table>

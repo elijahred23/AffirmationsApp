@@ -27,6 +27,8 @@
             @if(User.HasClaim("Permission", "Admin.Access"))
             {
                 <li>
+                <a asp-controller="Audit" asp-action="AuditLogs">
+                    Audit</a>
                 </li>
             }
             </ul>
