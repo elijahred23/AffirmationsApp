@@ -1,9 +1,19 @@
 @model Permission 
 <h2>Create Permission</h2>
 
+@using (Html.BeginForm("CreatePermission", "Admin", FormMethod.Post))
+{
+    <div class="mb-3">
+    @Html.LabelFor(m => m.Name, new {@class = "form-label"})
 
-<form asp-action="CreatePermission" method ="post">
-    <input asp-for="Name" placeholder="Permission Name" />
-    <input asp-for="Description" placeholder="Description" />
-    <button type="submit">Create</button>
-</form>
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control"})
+
+    @Html.ValidationMessageFor(m => m.Name, "", new {@class = "text-danger"})
+    </div>
+    <div class = "mb-3">
+        @Html.LabelFor(m => m.Description, new { @class = "form-label"})
+        @Html.TextBoxFor(m => m.Description, new {@class = "form-control"})
+    </div>
+
+    <button type="submit" class = "btn btn-primary">Create</button>
+}
