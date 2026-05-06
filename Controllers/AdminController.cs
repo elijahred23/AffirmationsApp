@@ -9,11 +9,14 @@ public class AdminController: Controller
 {
     private readonly AppDbContext _context;
     private readonly UsersDbContext _usersContext;
+    private readonly AuditService _auditService;
 
-    public AdminController(AppDbContext context, UsersDbContext usersContext)
+
+    public AdminController(AppDbContext context, UsersDbContext usersContext, AuditService auditService)
     {
         _context = context;
         _usersContext = usersContext;
+        _auditService = auditService;
     }
     public async Task<IActionResult> Index()
     {
@@ -124,11 +127,23 @@ public class AdminController: Controller
     [HttpPost]
     public async Task<IActionResult> CreatePermission(Permission model)
     {
+        var userId = int.Parse(User.FindFirst("UserId").Value);
+        var username = User.Identity.Name;
+
         if(!User.HasClaim("Permission", "Admin.Access"))
             return Forbid();
 
         _context.Permissions.Add(model);
         await _context.SaveChangesAsync();
+
+        await _auditService.Log(
+            userId,
+            username,
+            "Create",
+            "Permission",
+            model.Id,
+            $"Created permission: {model.Name}"
+        );
 
         return RedirectToAction("ManagePermissions");
     }
@@ -143,7 +158,18 @@ public class AdminController: Controller
     {
         _context.Permissions.Update(model);
         await _context.SaveChangesAsync();
+        
+        var userId = int.Parse(User.FindFirst("UserId").Value);
+        var username = User.Identity.Name;
 
+        await _auditService.Log(
+            userId,
+            username,
+            "Edit",
+            "Permission",
+            model.Id,
+            $"Updated permission: {model.Name}"
+        );
         return RedirectToAction("ManagePermissions");
     }
     public async Task<IActionResult> DeletePermission(int id)
@@ -163,7 +189,20 @@ public class AdminController: Controller
             _context.UserPermissions.RemoveRange(related);
 
             _context.Permissions.Remove(permission);
+
             await _context.SaveChangesAsync();
+
+            var userId = int.Parse(User.FindFirst("UserId").Value);
+            var username = User.Identity.Name;
+
+            await _auditService.Log(
+                userId,
+                username,
+                "Delete",
+                "Permission",
+                id,
+                $"Deleted permission: {permission.Name}"
+            );
         }
         return RedirectToAction("ManagePermissions");
     }

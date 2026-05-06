@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
 	public DbSet<UserFavorite> UserFavorites {get;set;}
 	public DbSet<Permission> Permissions {get;set;}
 	public DbSet<UserPermission> UserPermissions {get;set;}
+	public DbSet<AuditLog> AuditLogs {get;set;}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

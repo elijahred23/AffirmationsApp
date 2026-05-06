@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 [Authorize]
 public class AffirmationsController : Controller
 {
 	private readonly AppDbContext _context;
+	private readonly AuditService _auditService;
 
-	public AffirmationsController(AppDbContext context)
+	public AffirmationsController(AppDbContext context, AuditService auditService)
 	{
 		_context = context;
+		_auditService = auditService;
 	}
 
 	public async Task<IActionResult> Index()
@@ -33,9 +36,20 @@ public class AffirmationsController : Controller
 	[HttpPost]
 	public async Task<IActionResult> Create(Affirmation affirmation)
 	{
+		var userId = int.Parse(User.FindFirst("UserId").Value);
+		var username = User.Identity.Name;
+
 		_context.Add(affirmation);
 		await _context.SaveChangesAsync();
 
+		await _auditService.Log(
+			userId,
+			username,
+			"Create",
+			"Affirmation",
+			affirmation.Id,
+			$"Created affirmation: {affirmation.Text}"
+		);
 		return RedirectToAction(nameof(Index));
 	}
 	public async Task<IActionResult> Delete(int? id)
@@ -61,6 +75,17 @@ public class AffirmationsController : Controller
 		{
 			_context.Affirmations.Remove(affirmation);
 			await _context.SaveChangesAsync();
+			var userId = int.Parse(User.FindFirst("UserId").Value);
+			var username = User.Identity.Name;
+
+			await _auditService.Log(
+				userId,
+				username,
+				"Delete",
+				"Affirmation",
+				affirmation.Id,
+				$"Deleted affirmation"
+			);
 		}
 
 		return RedirectToAction(nameof(Index));
@@ -86,8 +111,21 @@ public class AffirmationsController : Controller
 
 		try
 		{
+			var userId = int.Parse(User.FindFirst("UserId").Value);
+			var username = User.Identity.Name;
+
 			_context.Update(affirmation);
 			await _context.SaveChangesAsync();
+
+			await _auditService.Log(
+				userId,
+				username,
+				"Edit",
+				"Affirmation",
+				affirmation.Id,
+				$"Updated affirmation"
+			);
+
 		} catch (DbUpdateConcurrencyException)
 		{
 			if(!_context.Affirmations.Any(e => e.Id == affirmation.Id))

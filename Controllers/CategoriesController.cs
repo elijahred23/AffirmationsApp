@@ -8,10 +8,13 @@ public class CategoriesController : Controller
 {
     
     private readonly AppDbContext _context;
+    private readonly AuditService _auditService;
 
-    public CategoriesController(AppDbContext context)
+
+    public CategoriesController(AppDbContext context, AuditService auditService)
     {
         _context = context;
+        _auditService = auditService;
     }
 
 
@@ -31,10 +34,22 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Category category)
     {
+        var userId = int.Parse(User.FindFirst("UserId").Value);
+        var username = User.Identity.Name;
+
         category.CreatedAt = DateTime.UtcNow;
 
         _context.Add(category);
         await _context.SaveChangesAsync();
+    
+        await _auditService.Log(
+            userId,
+            username,
+            "Create",
+            "Category",
+            category.Id,
+            $"Created category: {category.Name}"
+        );
 
         return RedirectToAction(nameof(Index));
     }
@@ -57,6 +72,15 @@ public class CategoriesController : Controller
         _context.Update(category);
 
         await _context.SaveChangesAsync();
+
+        await _auditService.Log(
+            int.Parse(User.FindFirst("UserId").Value),
+            User.Identity.Name,
+            "Edit",
+            "Category",
+            category.Id,
+            $"Updated category: {category.Name}"
+        );
 
         return RedirectToAction(nameof(Index));
     }
@@ -81,6 +105,14 @@ public class CategoriesController : Controller
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
+            await _auditService.Log(
+                int.Parse(User.FindFirst("UserId").Value),
+                User.Identity.Name,
+                "Delete",
+                "Category",
+                category.Id,
+                $"Deleted category: {category.Name}"
+            );
         }
 
         return RedirectToAction(nameof(Index));

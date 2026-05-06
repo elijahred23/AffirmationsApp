@@ -19,6 +19,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<AuditService>();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
