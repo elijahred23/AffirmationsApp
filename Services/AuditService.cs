@@ -23,7 +23,8 @@ public class AuditService
             Action = action,
             EntityName = entity,
             EntityId = entityId,
-            Details = details
+            Details = details,
+            CreatedAt = DateTime.UtcNow
         }; 
         _context.Add(log);
         await _context.SaveChangesAsync();
