@@ -64,6 +64,40 @@ public class AdminController: Controller
         return View(model);
     }
     [HttpPost]
+    public async Task<IActionResult> TogglePermissionByName(int userId, string permissionName)
+    {
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
+        var permission = await _context.Permissions
+            .FirstOrDefaultAsync(p => p.Name == permissionName);
+
+        if (permission == null)
+            return NotFound();
+
+        var existing = await _context.UserPermissions
+            .FirstOrDefaultAsync(up => 
+            up.UserId == userId &&
+            up.PermissionId == permission.Id);
+            
+        if(existing == null)
+        {
+            _context.UserPermissions.Add(new UserPermission
+            {
+                UserId = userId,
+                PermissionId = permission.Id
+            });
+        }
+        else
+        {
+            _context.UserPermissions.Remove(existing);
+
+        }
+        await _context.SaveChangesAsync();
+
+        return Ok(new {success = true});
+    }
+    [HttpPost]
     public async Task<IActionResult> TogglePermission(int userId, int permissionId)
     {
         if(!User.HasClaim("Permission", "Admin.Access"))
