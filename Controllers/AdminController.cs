@@ -148,14 +148,19 @@ public class AdminController: Controller
     }
     public async Task<IActionResult> DeletePermission(int id)
     {
+
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
         var permission = await _context.Permissions.FindAsync(id);
         if(permission != null)
         {
-            var userPermissions = await _context.UserPermissions
+
+            var related = await _context.UserPermissions
                 .Where(up => up.PermissionId == id)
                 .ToListAsync();
 
-            _context.UserPermissions.RemoveRange(userPermissions);
+            _context.UserPermissions.RemoveRange(related);
 
             _context.Permissions.Remove(permission);
             await _context.SaveChangesAsync();
