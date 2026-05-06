@@ -1,0 +1,21 @@
+@model List<UserViewModel>
+
+<h2>User Management</h2>
+
+<table class="table table-hover">
+    <thead>
+
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Permissions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        @await Html.PartialAsync("_UserRow", user)
+    }
+    </tbody>
+</table>

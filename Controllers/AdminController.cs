@@ -206,4 +206,29 @@ public class AdminController: Controller
         }
         return RedirectToAction("ManagePermissions");
     }
+    public async Task<IActionResult> Users()
+    {
+        if(!User.HasClaim("Permission", "Admin.Access"))
+            return Forbid();
+
+        var users = await _usersContext.Users.ToListAsync();
+
+        var permissions = await _context.UserPermissions
+            .Include(up => up.Permission)
+            .ToListAsync();
+
+        var model = users.Select(u => new UserViewModel
+        {
+            Id = u.Id,
+            Username = u.Username,
+            Email = u.Email,
+            IsActive = u.IsActive,
+            Permissions = permissions
+                .Where(up => up.UserId == u.Id)
+                .Select(p => p.Permission.Name)
+                .ToList()
+        }).ToList();
+
+        return View(model);
+    }
 }

@@ -1,0 +1,11 @@
+@model UserViewModel 
+<tr>
+    <td>@Model.Username</td>
+    <td>@Model.Email</td>
+    <td>
+        @await Html.PartialAsync("_UserStatusBadge", Model.IsActive)
+    </td>
+    <td>
+        @await Html.PartialAsync("_UserPermissionsPanel", Model.Permissions)
+    </td>
+</tr>

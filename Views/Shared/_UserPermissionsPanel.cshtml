@@ -1,0 +1,12 @@
+@model List<string>
+@if (Model == null || !Model.Any())
+{
+    <span class="text-muted">No permissions</span>
+}
+else 
+{
+    foreach (var p in Model)
+    {
+        <span class="badge bg-primary me-1">@p</span>
+    }
+}
