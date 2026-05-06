@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  padding-top: 70px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -34,4 +34,10 @@ body {
   font-weight: bold;
   padding: 2px;
   border-radius: 3px;
+}
+
+.navbar {
+  backdrop-filter: blur(10px);
+  background-color: rbga(33,37,41,0.9) !important;
+  transition: box-shadow 0.2s ease;
 }
